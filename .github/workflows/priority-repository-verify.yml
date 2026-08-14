@@ -1,0 +1,38 @@
+name: Verify MiniLinux package repository
+
+on:
+  push:
+    paths:
+      - 'x86_64/**'
+      - '.github/workflows/priority-repository-verify.yml'
+  pull_request:
+    paths:
+      - 'x86_64/**'
+      - '.github/workflows/priority-repository-verify.yml'
+  workflow_dispatch:
+
+jobs:
+  verify-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify packages listed in index.json
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, sys
+          root = pathlib.Path('x86_64')
+          index = json.loads((root / 'index.json').read_text())
+          errors = []
+          for package in index.get('packages', []):
+              archive = root / package['file']
+              if not archive.is_file():
+                  errors.append(f"missing archive: {archive}")
+                  continue
+              digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+              if digest != package['sha256']:
+                  errors.append(f"SHA-256 mismatch: {archive}")
+          if errors:
+              print('\n'.join(errors), file=sys.stderr)
+              raise SystemExit(1)
+          print(f"Verified {len(index.get('packages', []))} packages.")
+          PY
