@@ -1,0 +1,4 @@
+{"format":1,"packages":[
+{"name":"fastfetch","version":"2.67.1","file":"fastfetch-2.67.1-x86_64.mlpkg","sha256":"41e33638522fee6f04e5955169ff5a11803f269cad09153c5b9d9e9981dd544f","description":"Fast system information tool with MiniLinux logo","dependencies":""},
+{"name":"neofetch","version":"7.1.0","file":"neofetch-7.1.0-x86_64.mlpkg","sha256":"42faeb79815ca66f11bfb330e150f2dd89f077e4ed7a8a207b868a73c56236fe","description":"Bash system information tool with MiniLinux logo","dependencies":""}
+]}
