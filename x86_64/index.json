@@ -1,4 +1,12 @@
 {"format":1,"packages":[
-{"name":"fastfetch","version":"2.67.1","file":"fastfetch-2.67.1-x86_64.mlpkg","sha256":"41e33638522fee6f04e5955169ff5a11803f269cad09153c5b9d9e9981dd544f","description":"Fast system information tool with MiniLinux logo","dependencies":""},
-{"name":"neofetch","version":"7.1.0","file":"neofetch-7.1.0-x86_64.mlpkg","sha256":"42faeb79815ca66f11bfb330e150f2dd89f077e4ed7a8a207b868a73c56236fe","description":"Bash system information tool with MiniLinux logo","dependencies":""}
+{"name":"curl","version":"8.5.0-2ubuntu10.11","file":"curl-8.5.0-2ubuntu10.11-x86_64.mlpkg","sha256":"b1bb3fd723eaeb0eff20e5369d66a3166de603b9681c30d2a5de89f27760f420","description":"Command-line data transfer tool","dependencies":""},
+{"name":"fastfetch","version":"2.67.1","file":"fastfetch-2.67.1-x86_64.mlpkg","sha256":"5125ae701148f3b1e9b3ca4d2ead4fcf85baa6425895c7eb09ae5f6d3007f337","description":"Fast system information tool with MiniLinux logo","dependencies":""},
+{"name":"file","version":"5.45-3build1","file":"file-5.45-3build1-x86_64.mlpkg","sha256":"19b6ac5e3f54710fe2c7a90df520c2d581598aa476a7d1f584e750a6a0ad9890","description":"File type identification utility","dependencies":""},
+{"name":"htop","version":"3.3.0-4build1","file":"htop-3.3.0-4build1-x86_64.mlpkg","sha256":"87454d912a9ff29d6db09945b38aa3f4e8c7859d6abf7e3a4769ebca17025ab4","description":"Interactive process viewer","dependencies":""},
+{"name":"less","version":"590-2ubuntu2.1","file":"less-590-2ubuntu2.1-x86_64.mlpkg","sha256":"575a8a0a281926a82e88ff4fe78dba08fb355b13b3449b704890c1db35140eda","description":"Terminal pager","dependencies":""},
+{"name":"nano","version":"7.2-2ubuntu0.2","file":"nano-7.2-2ubuntu0.2-x86_64.mlpkg","sha256":"e20300ac29564765b1f5c1af12fa6d728aafdae3cb36f1df8cc24bf3d2873953","description":"Simple terminal text editor","dependencies":""},
+{"name":"neofetch","version":"7.1.0","file":"neofetch-7.1.0-x86_64.mlpkg","sha256":"ce24a367a4658865bd17f668f7be4f0a95db550a9b3e02425a00d373cc76a546","description":"Bash system information tool with MiniLinux logo","dependencies":""},
+{"name":"sudo","version":"1.9.15p5-3ubuntu5.24.04.2","file":"sudo-1.9.15p5-3ubuntu5.24.04.2-x86_64.mlpkg","sha256":"2bef5886ee33d2db1e38bfd1033976adbf10e4e0b5096a7a50c9a75b2302ed03","description":"Privilege delegation and command execution tool","dependencies":""},
+{"name":"unzip","version":"6.0-28ubuntu4.1","file":"unzip-6.0-28ubuntu4.1-x86_64.mlpkg","sha256":"8e1a4874b4073c97027264c950d31bbc2586a4586b56ca3dc2fec2bb7c1d72bc","description":"ZIP archive extractor","dependencies":""},
+{"name":"zip","version":"3.0-13ubuntu0.2","file":"zip-3.0-13ubuntu0.2-x86_64.mlpkg","sha256":"6ad5b86f30f4c7d8746a9b1de28fa643f8ad35cd9b27b5751028e521c595d104","description":"ZIP archive creator","dependencies":""}
 ]}
