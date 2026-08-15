@@ -1,0 +1,7 @@
+NAME=xz
+HOST_PACKAGE=xz-utils
+DESCRIPTION="XZ compression and decompression tools"
+DEPENDENCIES=""
+BINARIES="/usr/bin/xz /usr/bin/unxz /usr/bin/xzcat"
+EXTRA_PATHS=""
+TEST_COMMAND="xz --version"

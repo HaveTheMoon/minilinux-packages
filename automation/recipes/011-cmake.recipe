@@ -1,0 +1,7 @@
+NAME=cmake
+HOST_PACKAGE=cmake
+DESCRIPTION="Cross-platform build system generator"
+DEPENDENCIES=""
+BINARIES="/usr/bin/cmake /usr/bin/ctest /usr/bin/cpack"
+EXTRA_PATHS="/usr/share/cmake-3.28"
+TEST_COMMAND="cmake --version"

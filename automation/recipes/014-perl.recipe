@@ -1,0 +1,7 @@
+NAME=perl
+HOST_PACKAGE=perl
+DESCRIPTION="Perl interpreter and core scripting tools"
+DEPENDENCIES=""
+BINARIES="/usr/bin/perl /usr/bin/cpan /usr/bin/prove"
+EXTRA_PATHS="/usr/lib/x86_64-linux-gnu/perl /usr/share/perl /usr/share/perl5"
+TEST_COMMAND="perl -e 'print $^V'"

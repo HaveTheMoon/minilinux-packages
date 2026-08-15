@@ -1,0 +1,7 @@
+NAME=traceroute
+HOST_PACKAGE=traceroute
+DESCRIPTION="Network route tracing utility"
+DEPENDENCIES=""
+BINARIES="/usr/bin/traceroute"
+EXTRA_PATHS=""
+TEST_COMMAND="traceroute --version"

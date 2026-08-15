@@ -1,0 +1,7 @@
+NAME=jq
+HOST_PACKAGE=jq
+DESCRIPTION="Command-line JSON processor"
+DEPENDENCIES=""
+BINARIES="/usr/bin/jq"
+EXTRA_PATHS=""
+TEST_COMMAND="jq --version"

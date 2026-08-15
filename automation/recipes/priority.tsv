@@ -13,3 +13,29 @@
 2	ninja	Fast incremental build tool
 2	meson	Modern build system
 2	perl	Perl runtime for build tooling
+2	gdb	GNU native debugger
+2	strace	System call tracing utility
+2	ltrace	Library call tracing utility
+2	valgrind	Memory debugger and profiler
+2	bzip2	Bzip2 compression tools
+2	xz	XZ compression tools
+2	zstd	Zstandard compression tools
+2	7zip	7-Zip archive tools
+2	tar	GNU tar archive utility
+2	gzip	Gzip compression tools
+2	wget	Command-line download client
+2	rsync	File synchronization utility
+2	openssh-client	Secure remote access client
+2	nmap	Network discovery utility
+2	iproute2	IP networking tools
+2	iputils-ping	ICMP reachability tools
+2	net-tools	Legacy networking utilities
+2	traceroute	Network route tracing utility
+2	dnsutils	DNS diagnostics utilities
+2	whois	WHOIS lookup utility
+2	jq	JSON command-line processor
+2	tree	Directory hierarchy viewer
+2	lsof	Open file inspection utility
+2	bc	Arbitrary precision calculator
+2	tmux	Terminal multiplexer
+2	screen	Terminal session manager

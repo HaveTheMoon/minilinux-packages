@@ -1,0 +1,7 @@
+NAME=patch
+HOST_PACKAGE=patch
+DESCRIPTION="Patch application utility for source trees"
+DEPENDENCIES=""
+BINARIES="/usr/bin/patch"
+EXTRA_PATHS=""
+TEST_COMMAND="patch --version"

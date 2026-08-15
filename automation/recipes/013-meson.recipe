@@ -1,0 +1,7 @@
+NAME=meson
+HOST_PACKAGE=meson
+DESCRIPTION="Python-based modern build system"
+DEPENDENCIES="python3"
+BINARIES="/usr/bin/meson"
+EXTRA_PATHS="/usr/lib/python3/dist-packages/mesonbuild /usr/lib/python3/dist-packages/meson-1.3.2.egg-info"
+TEST_COMMAND="meson --version"

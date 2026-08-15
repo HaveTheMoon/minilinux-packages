@@ -1,0 +1,7 @@
+NAME=bc
+HOST_PACKAGE=bc
+DESCRIPTION="Arbitrary precision calculator language"
+DEPENDENCIES=""
+BINARIES="/usr/bin/bc"
+EXTRA_PATHS=""
+TEST_COMMAND="bc --version"

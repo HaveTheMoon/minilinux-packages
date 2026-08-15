@@ -1,0 +1,7 @@
+NAME=ltrace
+HOST_PACKAGE=ltrace
+DESCRIPTION="Library call tracing utility"
+DEPENDENCIES=""
+BINARIES="/usr/bin/ltrace"
+EXTRA_PATHS=""
+TEST_COMMAND="ltrace --version"

@@ -1,0 +1,7 @@
+NAME=dnsutils
+HOST_PACKAGE=bind9-dnsutils
+DESCRIPTION="DNS lookup and diagnostics utilities"
+DEPENDENCIES=""
+BINARIES="/usr/bin/dig /usr/bin/host /usr/bin/nslookup"
+EXTRA_PATHS=""
+TEST_COMMAND="dig -v"

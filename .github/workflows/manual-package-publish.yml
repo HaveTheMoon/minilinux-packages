@@ -46,8 +46,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            binutils busybox-static ca-certificates curl file gcc-13 g++-13 git \
-            htop less libc6-dev make nano pkgconf python3 sudo unzip zip
+            7zip bash bc binutils busybox-static bzip2 ca-certificates cmake curl \
+            dnsutils file g++-13 gcc-13 gdb git gzip htop iproute2 iputils-ping \
+            jq less libc6-dev lsof ltrace make meson nano net-tools ninja-build nmap \
+            openssh-client patch perl pkgconf python3 rsync screen strace sudo tar tmux \
+            traceroute tree unzip valgrind wget whois xz-utils zip zstd
 
       - name: Validate recipes
         working-directory: automation

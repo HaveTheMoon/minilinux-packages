@@ -1,0 +1,7 @@
+NAME=bash
+HOST_PACKAGE=bash
+DESCRIPTION="GNU command shell and scripting runtime"
+DEPENDENCIES=""
+BINARIES="/usr/bin/bash"
+EXTRA_PATHS=""
+TEST_COMMAND="bash --version"

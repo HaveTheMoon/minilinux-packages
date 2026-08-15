@@ -1,0 +1,7 @@
+NAME=tmux
+HOST_PACKAGE=tmux
+DESCRIPTION="Terminal multiplexer for persistent sessions"
+DEPENDENCIES=""
+BINARIES="/usr/bin/tmux"
+EXTRA_PATHS="/usr/lib/locale/C.utf8"
+TEST_COMMAND="tmux -V"

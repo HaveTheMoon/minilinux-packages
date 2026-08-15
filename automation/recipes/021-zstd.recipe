@@ -1,0 +1,7 @@
+NAME=zstd
+HOST_PACKAGE=zstd
+DESCRIPTION="Zstandard compression and decompression tools"
+DEPENDENCIES=""
+BINARIES="/usr/bin/zstd /usr/bin/unzstd /usr/bin/zstdcat"
+EXTRA_PATHS=""
+TEST_COMMAND="zstd --version"

@@ -59,7 +59,17 @@ for RECIPE in "$RECIPES"/[0-9][0-9][0-9]-*.recipe; do
     IFS=$OLD_IFS
 done
 
-PRIORITY_NAMES=$(awk -F '\t' 'NR > 1 && $1 !~ /^#/ { print $2 }' "$PRIORITY" | tr '\n' ' ')
+PRIORITY_NAMES=$(awk -F '\t' '
+    NR > 1 && $1 !~ /^#/ && $1 != "" {
+        if (seen[$2]++) { print "duplicate priority package: " $2 > "/dev/stderr"; exit 1 }
+        print $2
+    }
+' "$PRIORITY") || die "invalid or duplicate priority entry"
+PRIORITY_NAMES=$(printf '%s\n' "$PRIORITY_NAMES" | tr '\n' ' ')
+for NAME in $PRIORITY_NAMES; do
+    valid_name "$NAME" || die "invalid priority package '$NAME'"
+    contains_word "$RECIPE_NAMES" "$NAME" || die "priority package '$NAME' has no recipe"
+done
 for NAME in $RECIPE_NAMES; do
     contains_word "$PRIORITY_NAMES" "$NAME" || die "recipe $NAME is missing from priority.tsv"
 done

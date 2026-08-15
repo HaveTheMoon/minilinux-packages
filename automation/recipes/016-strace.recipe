@@ -1,0 +1,7 @@
+NAME=strace
+HOST_PACKAGE=strace
+DESCRIPTION="System call and signal tracing utility"
+DEPENDENCIES=""
+BINARIES="/usr/bin/strace /usr/bin/strace-log-merge"
+EXTRA_PATHS=""
+TEST_COMMAND="strace --version"

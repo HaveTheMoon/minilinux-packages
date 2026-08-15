@@ -1,0 +1,7 @@
+NAME=valgrind
+HOST_PACKAGE=valgrind
+DESCRIPTION="Memory debugging and profiling framework"
+DEPENDENCIES=""
+BINARIES="/usr/bin/valgrind /usr/bin/valgrind.bin /usr/bin/callgrind_annotate /usr/bin/cg_annotate"
+EXTRA_PATHS="/usr/libexec/valgrind"
+TEST_COMMAND="valgrind --version"

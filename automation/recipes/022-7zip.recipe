@@ -1,0 +1,7 @@
+NAME=7zip
+HOST_PACKAGE=7zip
+DESCRIPTION="7-Zip archive creation and extraction tools"
+DEPENDENCIES=""
+BINARIES="/usr/bin/7z /usr/bin/7za /usr/bin/7zr"
+EXTRA_PATHS="/usr/lib/7zip"
+TEST_COMMAND="7z"

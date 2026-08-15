@@ -1,0 +1,7 @@
+NAME=bzip2
+HOST_PACKAGE=bzip2
+DESCRIPTION="Bzip2 compression and decompression tools"
+DEPENDENCIES=""
+BINARIES="/usr/bin/bzip2 /usr/bin/bunzip2 /usr/bin/bzcat"
+EXTRA_PATHS=""
+TEST_COMMAND="bzip2 --version"

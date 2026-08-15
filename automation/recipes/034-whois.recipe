@@ -1,0 +1,7 @@
+NAME=whois
+HOST_PACKAGE=whois
+DESCRIPTION="WHOIS lookup and password hash tools"
+DEPENDENCIES=""
+BINARIES="/usr/bin/whois /usr/bin/mkpasswd"
+EXTRA_PATHS=""
+TEST_COMMAND="whois --version"

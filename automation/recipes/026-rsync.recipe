@@ -1,0 +1,7 @@
+NAME=rsync
+HOST_PACKAGE=rsync
+DESCRIPTION="Efficient local and remote file synchronization utility"
+DEPENDENCIES=""
+BINARIES="/usr/bin/rsync"
+EXTRA_PATHS=""
+TEST_COMMAND="rsync --version"

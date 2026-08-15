@@ -1,0 +1,7 @@
+NAME=openssh-client
+HOST_PACKAGE=openssh-client
+DESCRIPTION="OpenSSH remote access and file transfer client"
+DEPENDENCIES=""
+BINARIES="/usr/bin/ssh /usr/bin/scp /usr/bin/sftp /usr/bin/ssh-add /usr/bin/ssh-agent /usr/bin/ssh-keygen /usr/bin/ssh-keyscan"
+EXTRA_PATHS="/etc/ssh/ssh_config /etc/ssh/ssh_config.d"
+TEST_COMMAND="ssh -V"

@@ -1,0 +1,7 @@
+NAME=gdb
+HOST_PACKAGE=gdb
+DESCRIPTION="GNU debugger for native programs"
+DEPENDENCIES="python3"
+BINARIES="/usr/bin/gdb /usr/bin/gcore /usr/bin/gdbtui"
+EXTRA_PATHS="/usr/share/gdb"
+TEST_COMMAND="gdb --version"

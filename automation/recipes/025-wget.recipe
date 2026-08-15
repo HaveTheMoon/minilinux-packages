@@ -1,0 +1,7 @@
+NAME=wget
+HOST_PACKAGE=wget
+DESCRIPTION="Command-line HTTP and HTTPS download client"
+DEPENDENCIES=""
+BINARIES="/usr/bin/wget"
+EXTRA_PATHS=""
+TEST_COMMAND="wget --version"

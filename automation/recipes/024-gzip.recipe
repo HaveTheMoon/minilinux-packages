@@ -1,0 +1,7 @@
+NAME=gzip
+HOST_PACKAGE=gzip
+DESCRIPTION="Gzip compression and decompression tools"
+DEPENDENCIES=""
+BINARIES="/usr/bin/gzip /usr/bin/gunzip /usr/bin/zcat"
+EXTRA_PATHS=""
+TEST_COMMAND="gzip --version"

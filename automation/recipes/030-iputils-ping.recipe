@@ -1,0 +1,7 @@
+NAME=iputils-ping
+HOST_PACKAGE=iputils-ping
+DESCRIPTION="ICMP network reachability tools"
+DEPENDENCIES=""
+BINARIES="/usr/bin/ping /usr/bin/ping4 /usr/bin/ping6"
+EXTRA_PATHS=""
+TEST_COMMAND="ping -V"

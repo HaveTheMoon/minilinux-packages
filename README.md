@@ -68,6 +68,17 @@ Existing archives remain in the repository unless a new verified version of the
 same package is selected for publication. `index.json` is switched only after
 its full set of listed archives passes SHA-256 verification.
 
+### Current priority build plan
+
+The repository currently publishes 18 verified archives. Automation now
+contains 40 reviewed recipes; together with the 10 base packages produced by
+the base builder, the next controlled **Run workflow** can prepare a 50-package
+repository. The additional priority set covers build systems, debuggers,
+compression formats, secure file transfer, networking diagnostics, JSON tools,
+and terminal session utilities. Use `publish: false` first to inspect the
+tested artifact, then run with `publish: true` and `update_mode: outdated` to
+add the missing verified archives to `main`.
+
 ## Upstream projects
 
 Fastfetch is distributed upstream under the MIT License by [fastfetch-cli/fastfetch](https://github.com/fastfetch-cli/fastfetch). Neofetch is distributed upstream under the MIT License by [dylanaraps/neofetch](https://github.com/dylanaraps/neofetch). This repository repackages those artifacts for MiniLinux; it does not claim ownership of either upstream project.

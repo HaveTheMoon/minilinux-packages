@@ -1,0 +1,7 @@
+NAME=nmap
+HOST_PACKAGE=nmap
+DESCRIPTION="Network discovery and security auditing utility"
+DEPENDENCIES=""
+BINARIES="/usr/bin/nmap /usr/bin/nping"
+EXTRA_PATHS="/usr/share/nmap"
+TEST_COMMAND="nmap --version"

@@ -1,0 +1,7 @@
+NAME=screen
+HOST_PACKAGE=screen
+DESCRIPTION="Terminal multiplexer and session manager"
+DEPENDENCIES=""
+BINARIES="/usr/bin/screen"
+EXTRA_PATHS="/etc/screenrc"
+TEST_COMMAND="screen --version"

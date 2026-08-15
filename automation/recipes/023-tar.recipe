@@ -1,0 +1,7 @@
+NAME=tar
+HOST_PACKAGE=tar
+DESCRIPTION="GNU tar archive utility"
+DEPENDENCIES=""
+BINARIES="/usr/bin/tar"
+EXTRA_PATHS=""
+TEST_COMMAND="tar --version"

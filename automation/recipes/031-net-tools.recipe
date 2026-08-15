@@ -1,0 +1,7 @@
+NAME=net-tools
+HOST_PACKAGE=net-tools
+DESCRIPTION="Legacy network interface and routing utilities"
+DEPENDENCIES=""
+BINARIES="/bin/netstat /sbin/ifconfig /sbin/route"
+EXTRA_PATHS=""
+TEST_COMMAND="netstat --version"

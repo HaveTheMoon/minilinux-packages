@@ -1,0 +1,7 @@
+NAME=lsof
+HOST_PACKAGE=lsof
+DESCRIPTION="Open files and sockets inspection utility"
+DEPENDENCIES=""
+BINARIES="/usr/bin/lsof"
+EXTRA_PATHS=""
+TEST_COMMAND="lsof -v"

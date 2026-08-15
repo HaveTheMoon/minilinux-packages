@@ -1,0 +1,7 @@
+NAME=ninja
+HOST_PACKAGE=ninja-build
+DESCRIPTION="Fast incremental build executor"
+DEPENDENCIES=""
+BINARIES="/usr/bin/ninja"
+EXTRA_PATHS=""
+TEST_COMMAND="ninja --version"

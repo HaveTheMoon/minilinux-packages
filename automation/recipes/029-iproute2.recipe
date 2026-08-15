@@ -1,0 +1,7 @@
+NAME=iproute2
+HOST_PACKAGE=iproute2
+DESCRIPTION="IP networking and traffic control tools"
+DEPENDENCIES=""
+BINARIES="/bin/ip /bin/ss /sbin/tc /sbin/bridge"
+EXTRA_PATHS=""
+TEST_COMMAND="ip -Version"

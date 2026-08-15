@@ -1,0 +1,7 @@
+NAME=tree
+HOST_PACKAGE=tree
+DESCRIPTION="Directory hierarchy display utility"
+DEPENDENCIES=""
+BINARIES="/usr/bin/tree"
+EXTRA_PATHS=""
+TEST_COMMAND="tree --version"
