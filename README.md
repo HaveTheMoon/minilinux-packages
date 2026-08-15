@@ -23,26 +23,63 @@ minipkg install python3 git
 
 ## Available packages
 
-| Package | Version | Notes |
-| --- | --- | --- |
-| `binutils` | 2.42 | GNU assembler, linker, and binary utilities required by native compilation. |
-| `libc-dev` | 2.39 | C library headers, startup objects, development linker scripts, and vector-math runtime used by the compiler. |
-| `gcc` | 13.3.0 | GNU C compiler with the x86_64 compiler runtime. Depends on `binutils` and `libc-dev`. |
-| `gxx` | 13.3.0 | GNU C++ compiler driver, standard headers, and runtime libraries. Depends on `gcc`. |
-| `make` | 4.3 | Build automation utility. |
-| `pkg-config` | 1.8.1 | Metadata query tool used by many source builds. |
-| `python3` | 3.12.3 | CPython interpreter and standard library. |
-| `git` | 2.43.0 | Distributed version-control client; depends on `curl`. |
-| `fastfetch` | 2.67.1 | Upstream Linux x86_64 release with the MiniLinux monitor logo. |
-| `neofetch` | 7.1.0 | Upstream Bash system-information script with the MiniLinux monitor logo. |
-| `sudo` | 1.9.15p5 | Privilege delegation for root and members of the `sudo` group; installation does not grant privileges automatically. |
-| `curl` | 8.5.0 | Command-line HTTP, HTTPS, and other protocol client. |
-| `nano` | 7.2 | Small terminal text editor. |
-| `htop` | 3.3.0 | Interactive process and resource viewer. |
-| `less` | 590 | Terminal pager for long files and command output. |
-| `file` | 5.45 | Utility that identifies file types using the bundled magic database. |
-| `zip` | 3.0 | ZIP archive creator. |
-| `unzip` | 6.0 | ZIP archive extractor. |
+The repository currently provides **50 MiniLinux x86_64 packages**. The
+canonical version, dependency, archive, and checksum records are maintained in
+[`x86_64/index.json`](x86_64/index.json); package names deliberately remain
+independent of the Ubuntu build-host revision.
+
+| Package | Purpose |
+| --- | --- |
+| `7zip` | 7-Zip archive creation and extraction tools. |
+| `bash` | GNU command shell and scripting runtime. |
+| `bc` | Arbitrary-precision calculator language. |
+| `binutils` | GNU assembler, linker, and binary utilities. |
+| `bzip2` | Bzip2 compression and decompression tools. |
+| `cmake` | Cross-platform build system generator. |
+| `curl` | Command-line data transfer client. |
+| `dnsutils` | DNS lookup and diagnostic utilities. |
+| `fastfetch` | Fast system information tool with MiniLinux logo. |
+| `file` | File type identification utility. |
+| `gcc` | GNU C compiler with x86_64 runtime support. |
+| `gdb` | GNU debugger for native programs. |
+| `git` | Distributed version-control client. |
+| `gxx` | GNU C++ compiler driver. |
+| `gzip` | Gzip compression and decompression tools. |
+| `htop` | Interactive process viewer. |
+| `iproute2` | IP networking and traffic-control tools. |
+| `iputils-ping` | ICMP network reachability tools. |
+| `jq` | Command-line JSON processor. |
+| `less` | Terminal pager. |
+| `libc-dev` | C library headers and startup objects for native compilation. |
+| `lsof` | Open files and sockets inspection utility. |
+| `ltrace` | Library call tracing utility. |
+| `make` | GNU build automation tool. |
+| `meson` | Python-based modern build system. |
+| `nano` | Simple terminal text editor. |
+| `neofetch` | Bash system information tool with MiniLinux logo. |
+| `net-tools` | Legacy network interface and routing utilities. |
+| `ninja` | Fast incremental build executor. |
+| `nmap` | Network discovery and security auditing utility. |
+| `openssh-client` | OpenSSH remote access and file-transfer client. |
+| `patch` | Source patch application utility. |
+| `perl` | Perl interpreter and core scripting tools. |
+| `pkg-config` | Compiler and linker flag metadata helper. |
+| `python3` | Python interpreter and standard library. |
+| `rsync` | Efficient local and remote file synchronization utility. |
+| `screen` | Terminal multiplexer and session manager. |
+| `strace` | System-call and signal tracing utility. |
+| `sudo` | Privilege delegation and command execution tool. |
+| `tar` | GNU tar archive utility. |
+| `tmux` | Terminal multiplexer for persistent sessions. |
+| `traceroute` | Network route tracing utility. |
+| `tree` | Directory hierarchy display utility. |
+| `unzip` | ZIP archive extractor. |
+| `valgrind` | Memory debugging and profiling framework. |
+| `wget` | Command-line HTTP and HTTPS download client. |
+| `whois` | WHOIS lookup and password hash tools. |
+| `xz` | XZ compression and decompression tools. |
+| `zip` | ZIP archive creator. |
+| `zstd` | Zstandard compression and decompression tools. |
 
 ## Package integrity
 
@@ -70,14 +107,9 @@ its full set of listed archives passes SHA-256 verification.
 
 ### Current priority build plan
 
-The repository currently publishes 18 verified archives. Automation now
-contains 40 reviewed recipes; together with the 10 base packages produced by
-the base builder, the next controlled **Run workflow** can prepare a 50-package
-repository. The additional priority set covers build systems, debuggers,
-compression formats, secure file transfer, networking diagnostics, JSON tools,
-and terminal session utilities. Use `publish: false` first to inspect the
-tested artifact, then run with `publish: true` and `update_mode: outdated` to
-add the missing verified archives to `main`.
+All 50 priority packages have been built and verified. The controlled workflow
+continues to use `publish: false` for a dry-run artifact or `publish: true` and
+`update_mode: outdated` to publish missing or newer verified packages.
 
 ## Upstream projects
 
