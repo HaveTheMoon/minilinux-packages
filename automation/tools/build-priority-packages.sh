@@ -31,7 +31,16 @@ copy_path() {
     [ -e "$SOURCE" ] || return 0
     if [ -d "$SOURCE" ]; then
         mkdir -p "$DESTROOT$(dirname "$SOURCE")"
-        cp -aL "$SOURCE" "$DESTROOT$(dirname "$SOURCE")/"
+        # Preserve symlinks within large runtime trees. Dereferencing every
+        # link breaks on optional development links that can be dangling on a
+        # CI runner (for example, lldb's bundled LLVM links). Copy real targets
+        # separately so absolute compiler links such as liblto_plugin resolve
+        # in the packaged rootfs.
+        cp -a "$SOURCE" "$DESTROOT$(dirname "$SOURCE")/"
+        find "$SOURCE" -type l -print | while IFS= read -r LINK; do
+            TARGET=$(readlink -f "$LINK" 2>/dev/null || true)
+            [ -n "$TARGET" ] && [ -e "$TARGET" ] && copy_item "$TARGET" "$DESTROOT"
+        done
         find "$SOURCE" -type f -perm -u+x -print | while IFS= read -r EXECUTABLE; do
             copy_elf "$EXECUTABLE" "$DESTROOT"
         done
