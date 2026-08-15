@@ -1,0 +1,7 @@
+NAME=gcc
+HOST_PACKAGE=gcc-13
+DESCRIPTION="GNU C compiler with x86_64 runtime support"
+DEPENDENCIES="binutils,libc-dev"
+BINARIES="/usr/bin/gcc /usr/bin/gcc-13 /usr/bin/cc /usr/bin/cpp /usr/bin/cpp-13"
+EXTRA_PATHS="/usr/lib/gcc/x86_64-linux-gnu/13 /usr/libexec/gcc/x86_64-linux-gnu/13/cc1"
+TEST_COMMAND="gcc --version"

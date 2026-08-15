@@ -1,0 +1,7 @@
+NAME=python3
+HOST_PACKAGE=python3
+DESCRIPTION="Python interpreter and standard library"
+DEPENDENCIES=""
+BINARIES="/usr/bin/python3 /usr/bin/python3.12"
+EXTRA_PATHS="/usr/lib/python3 /usr/lib/python3.12 /usr/lib/x86_64-linux-gnu/libpython3.12.so.1.0"
+TEST_COMMAND="python3 -c 'import sys; print(sys.version_info[:2])'"

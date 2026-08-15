@@ -1,0 +1,186 @@
+#!/bin/sh
+# MiniLinux package manager v1: offline-first .mlpkg archives plus SHA-256.
+set -eu
+
+REPOSITORIES=/etc/minipkg/repositories
+CACHE=/var/cache/minipkg
+DATABASE=/var/lib/minipkg
+INDEX=$CACHE/index.json
+CONNECT_TIMEOUT=8
+READ_TIMEOUT=20
+RETRIES=1
+INSTALLED=$DATABASE/installed
+
+die() { echo "minipkg: $*" >&2; exit 1; }
+need_root() { [ "$(id -u)" -eq 0 ] || die "this command must be run as root"; }
+prepare() { mkdir -p "$CACHE/packages" "$DATABASE/files"; touch "$INSTALLED"; }
+valid_name() { case "$1" in [a-z0-9][a-z0-9_-]*) ;; *) die "invalid package name: $1";; esac; }
+
+usage() {
+    cat <<'EOF'
+MiniLinux package manager
+
+  minipkg update             refresh the package index
+  minipkg search WORD        find available packages
+  minipkg install PACKAGE    verify and install a package with dependencies
+  minipkg list               list packages installed by minipkg
+  minipkg remove PACKAGE     remove package-owned files
+  minipkg verify PACKAGE     verify cached package SHA-256
+  minipkg repo               show configured repositories
+
+The first release ships with an offline repository at /opt/minilinux/repo.
+EOF
+}
+
+first_repository() {
+    [ -f "$REPOSITORIES" ] || die "missing $REPOSITORIES"
+    grep -v '^[[:space:]]*\(#\|$\)' "$REPOSITORIES" | head -n 1 || true
+}
+
+field() {
+    printf '%s\n' "$1" | awk -v key="$2" '
+        {
+            needle = "\"" key "\":\""
+            start = index($0, needle)
+            if (start) {
+                rest = substr($0, start + length(needle))
+                finish = index(rest, "\"")
+                if (finish) print substr(rest, 1, finish - 1)
+            }
+        }
+    ' | head -n 1
+}
+record_for() { [ -f "$INDEX" ] || die "run 'minipkg update' first"; grep -F "\"name\":\"$1\"" "$INDEX" | head -n 1 || true; }
+
+source_for() {
+    case "$1" in file://*) printf 'file://%s/%s\n' "${1#file://}" "$2";; *) printf '%s/%s\n' "${1%/}" "$2";; esac
+}
+network_ready() {
+    [ -x /usr/bin/nmcli ] || return 0
+    RUNNING=$(/usr/bin/nmcli -t -f RUNNING general 2>/dev/null || true)
+    [ "$RUNNING" = "running" ] || die "network unavailable: NetworkManager is not running; run 'rc-service networkmanager start'"
+    /usr/bin/nmcli -t -f STATE device status 2>/dev/null | grep -qx 'connected' || \
+        die "network unavailable: no connected network device; run 'nmcli device status'"
+}
+
+fetch() {
+    URL=$1
+    DESTINATION=$2
+    case "$URL" in
+        file://*) cp "${URL#file://}" "$DESTINATION";;
+        http://*|https://*)
+            network_ready
+            /usr/bin/wget \
+                --ca-certificate=/etc/ssl/certs/ca-certificates.crt \
+                --timeout="$READ_TIMEOUT" \
+                --dns-timeout="$CONNECT_TIMEOUT" \
+                --connect-timeout="$CONNECT_TIMEOUT" \
+                --read-timeout="$READ_TIMEOUT" \
+                --tries="$RETRIES" \
+                -q -O "$DESTINATION" "$URL" || \
+                die "cannot download $URL (check 'nmcli device status' and DNS)"
+            ;;
+        *) die "unsupported repository URL: $URL";;
+    esac
+}
+
+cmd_update() {
+    prepare
+    REPO=$(first_repository); [ -n "$REPO" ] || die "no active repository"
+    echo "Refreshing index from $REPO"
+    fetch "$(source_for "$REPO" index.json)" "$INDEX.new"
+    grep -q '"format":1' "$INDEX.new" || { rm -f "$INDEX.new"; die "invalid repository index"; }
+    mv "$INDEX.new" "$INDEX"
+    echo "Index refreshed."
+}
+cmd_search() {
+    [ "$#" -eq 1 ] || die "usage: minipkg search WORD"
+    [ -f "$INDEX" ] || cmd_update
+    grep -i "$1" "$INDEX" | sed 's/.*"name":"\([^"]*\)".*"version":"\([^"]*\)".*"description":"\([^"]*\)".*/\1 \2 — \3/' || true
+}
+download() {
+    valid_name "$1"
+    RECORD=$(record_for "$1"); [ -n "$RECORD" ] || die "package not found: $1"
+    FILE=$(field "$RECORD" file); HASH=$(field "$RECORD" sha256)
+    [ -n "$FILE" ] && [ -n "$HASH" ] || die "invalid package record: $1"
+    REPO=$(first_repository); TARGET=$CACHE/packages/$FILE
+    fetch "$(source_for "$REPO" "$FILE")" "$TARGET.new"
+    printf '%s  %s\n' "$HASH" "$TARGET.new" | sha256sum -c - >/dev/null 2>&1 || { rm -f "$TARGET.new"; die "SHA-256 mismatch for $1"; }
+    mv "$TARGET.new" "$TARGET"
+    printf '%s\n' "$TARGET"
+}
+install_one() {
+    NAME=$1
+    valid_name "$NAME"
+    grep -q "^${NAME}|" "$INSTALLED" && { echo "$NAME is already installed"; return; }
+    RECORD=$(record_for "$NAME"); [ -n "$RECORD" ] || die "package not found: $NAME"
+    DEPENDENCIES=$(field "$RECORD" dependencies)
+    case ",${INSTALL_STACK:-}," in
+        *",$NAME,"*) die "dependency cycle detected: ${INSTALL_STACK:-$NAME},$NAME";;
+    esac
+    PREVIOUS_STACK=${INSTALL_STACK:-}
+    INSTALL_STACK="${PREVIOUS_STACK:+$PREVIOUS_STACK,}$NAME"
+    export INSTALL_STACK
+    if [ -n "$DEPENDENCIES" ]; then
+        OLD_IFS=$IFS
+        IFS=,
+        for DEPENDENCY in $DEPENDENCIES; do
+            IFS=$OLD_IFS
+            [ -n "$DEPENDENCY" ] || continue
+            valid_name "$DEPENDENCY"
+            # POSIX sh has no portable local variables. Run nested installs in
+            # a subshell so their NAME/WORK variables cannot overwrite those
+            # of the package currently being installed.
+            ( install_one "$DEPENDENCY" )
+            IFS=,
+        done
+        IFS=$OLD_IFS
+    fi
+    ARCHIVE=$(download "$NAME")
+    WORK=$(mktemp -d /tmp/minipkg.XXXXXX)
+    trap 'rm -rf "$WORK"' EXIT HUP INT TERM
+    tar -tJf "$ARCHIVE" | grep -E '(^/|(^|/)\.\.(/|$))' >/dev/null && die "unsafe archive path in $NAME"
+    tar -xJf "$ARCHIVE" -C "$WORK"
+    [ -f "$WORK/meta.json" ] && [ -d "$WORK/root" ] || die "invalid package layout: $NAME"
+    META_NAME=$(sed -n 's/.*"name":"\([^"]*\)".*/\1/p' "$WORK/meta.json" | head -n 1)
+    META_VERSION=$(sed -n 's/.*"version":"\([^"]*\)".*/\1/p' "$WORK/meta.json" | head -n 1)
+    [ "$META_NAME" = "$NAME" ] || die "package name mismatch"
+    (cd "$WORK/root" && tar -cf - .) | tar -C / -xf -
+    (cd "$WORK/root" && find . \( -type f -o -type l \) -print | sed 's#^\./#/#') > "$DATABASE/files/$NAME"
+    printf '%s|%s\n' "$NAME" "$META_VERSION" >> "$INSTALLED"
+    rm -rf "$WORK"; trap - EXIT HUP INT TERM
+    INSTALL_STACK=$PREVIOUS_STACK
+    export INSTALL_STACK
+    echo "Installed $NAME $META_VERSION"
+}
+cmd_install() {
+    [ "$#" -gt 0 ] || die "usage: minipkg install PACKAGE [PACKAGE ...]"
+    need_root; prepare; [ -f "$INDEX" ] || cmd_update
+    for NAME in "$@"; do install_one "$NAME"; done
+}
+cmd_list() { prepare; [ -s "$INSTALLED" ] && sed 's/|/ /' "$INSTALLED" || echo "No packages installed by minipkg."; }
+cmd_remove() {
+    [ "$#" -eq 1 ] || die "usage: minipkg remove PACKAGE"
+    need_root; prepare; NAME=$1; valid_name "$NAME"
+    [ -f "$DATABASE/files/$NAME" ] || die "$NAME is not installed by minipkg"
+    while IFS= read -r PATHNAME; do case "$PATHNAME" in /?*) rm -f "$PATHNAME";; *) die "unsafe package file entry";; esac; done < "$DATABASE/files/$NAME"
+    grep -v "^${NAME}|" "$INSTALLED" > "$INSTALLED.new" || true
+    mv "$INSTALLED.new" "$INSTALLED"; rm -f "$DATABASE/files/$NAME"
+    echo "Removed $NAME"
+}
+cmd_verify() {
+    [ "$#" -eq 1 ] || die "usage: minipkg verify PACKAGE"
+    prepare; RECORD=$(record_for "$1"); [ -n "$RECORD" ] || die "package not found: $1"
+    FILE=$(field "$RECORD" file); HASH=$(field "$RECORD" sha256)
+    [ -f "$CACHE/packages/$FILE" ] || die "package is not cached; install it first"
+    printf '%s  %s\n' "$HASH" "$CACHE/packages/$FILE" | sha256sum -c -
+}
+cmd_repo() { [ -f "$REPOSITORIES" ] && cat "$REPOSITORIES" || true; }
+
+COMMAND=${1:-help}; shift || true
+case "$COMMAND" in
+    help|-h|--help) usage;; update) [ "$#" -eq 0 ] || die "update takes no arguments"; cmd_update;;
+    search) cmd_search "$@";; install) cmd_install "$@";; list) [ "$#" -eq 0 ] || die "list takes no arguments"; cmd_list;;
+    remove) cmd_remove "$@";; verify) cmd_verify "$@";; repo) [ "$#" -eq 0 ] || die "repo takes no arguments"; cmd_repo;;
+    *) die "unknown command: $COMMAND (run minipkg help)";;
+esac

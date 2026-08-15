@@ -48,6 +48,26 @@ minipkg install python3 git
 
 `minipkg install` downloads an archive only after obtaining its record from `index.json`, then checks its SHA-256 checksum before extraction. The repository workflow repeats this verification whenever the package tree or index changes.
 
+## Controlled package automation
+
+The `automation/` directory contains the reviewed MiniLinux recipe set and its
+portable build/test tools. In the **Actions** tab, choose **Build and publish
+MiniLinux packages** and select **Run workflow**. The workflow validates every
+recipe, rebuilds the priority set on Ubuntu 24.04, installs the resulting
+packages in a clean MiniLinux rootfs, verifies archive checksums, then updates
+the repository only when all checks pass.
+
+| Input | Result |
+| --- | --- |
+| `publish: true` | Commit verified archives and the merged `index.json` to `main`. |
+| `publish: false` | Do not change `main`; upload the tested package output as a workflow artifact. |
+| `update_mode: outdated` | Add missing packages and replace only packages whose version changed. |
+| `update_mode: rebuild_all` | Publish freshly rebuilt copies of every package in the selected priority set. |
+
+Existing archives remain in the repository unless a new verified version of the
+same package is selected for publication. `index.json` is switched only after
+its full set of listed archives passes SHA-256 verification.
+
 ## Upstream projects
 
 Fastfetch is distributed upstream under the MIT License by [fastfetch-cli/fastfetch](https://github.com/fastfetch-cli/fastfetch). Neofetch is distributed upstream under the MIT License by [dylanaraps/neofetch](https://github.com/dylanaraps/neofetch). This repository repackages those artifacts for MiniLinux; it does not claim ownership of either upstream project.

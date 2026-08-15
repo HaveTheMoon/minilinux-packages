@@ -1,0 +1,15 @@
+# tier	package	role
+1	binutils	Assembler, linker and binary inspection tools
+1	libc-dev	C library headers and startup objects
+1	gcc	GNU C compiler
+1	gxx	GNU C++ compiler
+1	make	GNU build tool
+1	pkg-config	Library compiler and linker flags helper
+1	python3	Python interpreter and standard library
+1	git	Distributed version control client
+2	bash	Interactive shell and scripting runtime
+2	patch	Source patch utility
+2	cmake	Cross-platform build generator
+2	ninja	Fast incremental build tool
+2	meson	Modern build system
+2	perl	Perl runtime for build tooling

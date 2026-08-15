@@ -1,0 +1,7 @@
+NAME=binutils
+HOST_PACKAGE=binutils
+DESCRIPTION="GNU assembler linker and binary utilities"
+DEPENDENCIES=""
+BINARIES="/usr/bin/ar /usr/bin/as /usr/bin/ld /usr/bin/nm /usr/bin/objcopy /usr/bin/objdump /usr/bin/ranlib /usr/bin/readelf /usr/bin/size /usr/bin/strings /usr/bin/strip"
+EXTRA_PATHS="/usr/bin/ld.bfd /usr/bin/ld.gold"
+TEST_COMMAND="ar --version"

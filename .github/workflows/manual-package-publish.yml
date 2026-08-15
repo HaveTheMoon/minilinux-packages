@@ -1,0 +1,93 @@
+name: Build and publish MiniLinux packages
+
+run-name: Build priority packages by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish successfully rebuilt packages and the merged index to main
+        required: true
+        default: true
+        type: boolean
+      scope:
+        description: Package set to rebuild
+        required: true
+        default: priority
+        type: choice
+        options:
+          - priority
+      update_mode:
+        description: Publish only missing/changed-version packages, or force-refresh all rebuilt packages
+        required: true
+        default: outdated
+        type: choice
+        options:
+          - outdated
+          - rebuild_all
+
+permissions:
+  contents: write
+
+concurrency:
+  group: minilinux-package-publish-main
+  cancel-in-progress: false
+
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out package repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install trusted build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            binutils busybox-static ca-certificates curl file gcc-13 g++-13 git \
+            htop less libc6-dev make nano pkgconf python3 sudo unzip zip
+
+      - name: Validate recipes
+        working-directory: automation
+        run: ./tools/validate-recipes.sh
+
+      - name: Build and test priority packages
+        working-directory: automation
+        run: ./tools/prepare-priority-publication.sh "$RUNNER_TEMP/minilinux-publication"
+
+      - name: Stage archives and merge package index
+        run: |
+          node automation/tools/prepare-package-updates.mjs \
+            x86_64/index.json \
+            "$RUNNER_TEMP/minilinux-publication/x86_64/index.json" \
+            x86_64 \
+            "$RUNNER_TEMP/minilinux-updates.json" \
+            '${{ inputs.update_mode }}'
+          node automation/tools/merge-repository-index.mjs \
+            x86_64/index.json \
+            "$RUNNER_TEMP/minilinux-updates.json" \
+            x86_64/index.json
+          node automation/tools/verify-repository-index.mjs x86_64
+
+      - name: Upload tested publication output
+        if: ${{ !inputs.publish }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: minilinux-priority-publication
+          path: ${{ runner.temp }}/minilinux-publication/x86_64
+          if-no-files-found: error
+
+      - name: Commit verified package updates
+        if: ${{ inputs.publish }}
+        run: |
+          if git diff --quiet -- x86_64; then
+            echo 'No package or index changes to publish.'
+            exit 0
+          fi
+          git config user.name 'minilinux-package-bot[bot]'
+          git config user.email 'minilinux-package-bot[bot]@users.noreply.github.com'
+          git add x86_64
+          git commit -m 'Publish verified MiniLinux priority packages'
+          git push origin HEAD:main

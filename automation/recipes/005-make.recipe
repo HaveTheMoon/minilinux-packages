@@ -1,0 +1,7 @@
+NAME=make
+HOST_PACKAGE=make
+DESCRIPTION="GNU build automation tool"
+DEPENDENCIES=""
+BINARIES="/usr/bin/make"
+EXTRA_PATHS=""
+TEST_COMMAND="make --version"

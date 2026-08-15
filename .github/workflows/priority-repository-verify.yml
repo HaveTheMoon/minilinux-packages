@@ -4,11 +4,12 @@ on:
   push:
     paths:
       - 'x86_64/**'
+      - 'automation/**'
       - '.github/workflows/priority-repository-verify.yml'
   pull_request:
     paths:
       - 'x86_64/**'
-      - '.github/workflows/priority-repository-verify.yml'
+      - 'automation/**'
   workflow_dispatch:
 
 jobs:

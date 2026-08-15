@@ -1,0 +1,7 @@
+NAME=pkg-config
+HOST_PACKAGE=pkgconf
+DESCRIPTION="Compiler and linker flag metadata helper"
+DEPENDENCIES=""
+BINARIES="/usr/bin/pkg-config /usr/bin/pkgconf"
+EXTRA_PATHS="/usr/lib/x86_64-linux-gnu/pkgconfig"
+TEST_COMMAND="pkg-config --version"

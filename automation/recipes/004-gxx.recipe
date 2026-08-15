@@ -1,0 +1,7 @@
+NAME=gxx
+HOST_PACKAGE=g++-13
+DESCRIPTION="GNU C++ compiler driver"
+DEPENDENCIES="gcc"
+BINARIES="/usr/bin/g++ /usr/bin/g++-13 /usr/bin/c++"
+EXTRA_PATHS="/usr/libexec/gcc/x86_64-linux-gnu/13/cc1plus /usr/include/c++ /usr/include/x86_64-linux-gnu/c++ /lib/x86_64-linux-gnu/libstdc++.so.6 /lib/x86_64-linux-gnu/libgcc_s.so.1"
+TEST_COMMAND="g++ --version"

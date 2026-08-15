@@ -1,0 +1,7 @@
+NAME=git
+HOST_PACKAGE=git
+DESCRIPTION="Distributed version control client"
+DEPENDENCIES="curl"
+BINARIES="/usr/bin/git"
+EXTRA_PATHS="/usr/lib/git-core /usr/share/git-core"
+TEST_COMMAND="git --version"
