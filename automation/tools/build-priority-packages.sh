@@ -39,7 +39,10 @@ copy_path() {
         cp -a "$SOURCE" "$DESTROOT$(dirname "$SOURCE")/"
         find "$SOURCE" -type l -print | while IFS= read -r LINK; do
             TARGET=$(readlink -f "$LINK" 2>/dev/null || true)
-            [ -n "$TARGET" ] && [ -e "$TARGET" ] && copy_item "$TARGET" "$DESTROOT"
+            if [ -n "$TARGET" ] && [ -e "$TARGET" ]; then
+                copy_item "$TARGET" "$DESTROOT" || \
+                    printf 'Skipping unavailable optional symlink target: %s\n' "$TARGET" >&2
+            fi
         done
         find "$SOURCE" -type f -perm -u+x -print | while IFS= read -r EXECUTABLE; do
             copy_elf "$EXECUTABLE" "$DESTROOT"
