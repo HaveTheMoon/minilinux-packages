@@ -20,14 +20,20 @@ g++ hello.cpp -o hello && ./hello
 
 minipkg install python3 git
 
-# Optional desktop browser; requires the XFCE desktop stack.
+# Install the complete optional XFCE desktop stack. This installs Xorg, Mesa,
+# XFCE, the terminal, Thunar and MiniLinux OpenRC desktop integration.
+minipkg install minilinux-xfce
+ml-useradd alice && passwd alice
+reboot
+
+# Optional desktop browser; install after minilinux-xfce.
 minipkg install firefox
 firefox
 ```
 
 ## Available packages
 
-The repository currently provides **58 MiniLinux x86_64 packages**. The
+The repository currently provides **59 MiniLinux x86_64 packages**. The
 canonical version, dependency, archive, and checksum records are maintained in
 [`x86_64/index.json`](x86_64/index.json); package names deliberately remain
 independent of the Ubuntu build-host revision.
@@ -63,6 +69,7 @@ independent of the Ubuntu build-host revision.
 | `make` | GNU build automation tool. |
 | `mesa` | Mesa DRI, OpenGL, EGL, GBM and DRM desktop runtime. |
 | `meson` | Python-based modern build system. |
+| `minilinux-xfce` | Optional complete XFCE desktop integration; enables the OpenRC desktop service after installation. |
 | `nano` | Simple terminal text editor. |
 | `neofetch` | Bash system information tool with MiniLinux logo. |
 | `net-tools` | Legacy network interface and routing utilities. |
