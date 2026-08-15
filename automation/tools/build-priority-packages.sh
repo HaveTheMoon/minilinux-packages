@@ -6,12 +6,16 @@ set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 OUT=${1:-"$ROOT/build/package-staging/x86_64"}
+case "$OUT" in /*) ;; *) OUT="$ROOT/$OUT";; esac
 WORK="$ROOT/build/priority-packages"
 RECIPES="$ROOT/recipes"
 ARCH=x86_64
 
 die() { echo "build-priority-packages: $*" >&2; exit 1; }
-host_version() { dpkg-query -W -f='${Version}' "$1" 2>/dev/null | sed 's/^[0-9]*://' | tr '/' '_'; }
+public_version() {
+    dpkg-query -W -f='${Version}' "$1" 2>/dev/null |
+        sed 's/^[0-9]*://; s/.*+really//; s/-.*$//; s@/@_@g'
+}
 
 copy_item() {
     SOURCE=$1 DESTROOT=$2
@@ -77,7 +81,7 @@ for RECIPE in "$RECIPES"/[0-9][0-9][0-9]-*.recipe; do
     # shellcheck disable=SC1090
     . "$RECIPE"
     [ -n "${NAME:-}" ] && [ -n "${HOST_PACKAGE:-}" ] && [ -n "${DESCRIPTION:-}" ] || die "invalid recipe $RECIPE"
-    VERSION=$(host_version "$HOST_PACKAGE")
+    VERSION=$(public_version "$HOST_PACKAGE")
     [ -n "$VERSION" ] || die "host package is unavailable: $HOST_PACKAGE"
     STAGE="$WORK/$NAME-root"
     mkdir -p "$STAGE"

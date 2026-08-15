@@ -4,6 +4,7 @@ set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 OUT=${1:-"$ROOT/packages-public/x86_64"}
+case "$OUT" in /*) ;; *) OUT="$ROOT/$OUT";; esac
 WORK="$ROOT/build/public-packages"
 ARCH=x86_64
 FASTFETCH_VERSION=2.67.1
@@ -49,8 +50,9 @@ package_archive() {
         "$NAME" "$VERSION" "$ARCH" "$DESCRIPTION" > "$PKGWORK/meta.json"
     (cd "$PKGWORK" && tar --owner=0 --group=0 -cJf "$ARCHIVE" meta.json root)
 }
-host_version() {
-    dpkg-query -W -f='${Version}' "$1" 2>/dev/null | sed 's/^[0-9]*://' | tr '/' '_'
+public_version() {
+    dpkg-query -W -f='${Version}' "$1" 2>/dev/null |
+        sed 's/^[0-9]*://; s/.*+really//; s/-.*$//; s@/@_@g'
 }
 build_host_binary_package() {
     NAME=$1
@@ -60,7 +62,7 @@ build_host_binary_package() {
     STAGE="$WORK/$NAME-root"
     mkdir -p "$STAGE"
     copy_binary "$BINARY" "$STAGE"
-    package_archive "$NAME" "$(host_version "$DEB")" "$DESCRIPTION" "$STAGE"
+    package_archive "$NAME" "$(public_version "$DEB")" "$DESCRIPTION" "$STAGE"
 }
 
 rm -rf "$WORK" "$OUT"
@@ -114,7 +116,7 @@ FILE_STAGE="$WORK/file-root"
 mkdir -p "$FILE_STAGE"
 copy_binary /usr/bin/file "$FILE_STAGE"
 copy_item /usr/share/misc/magic.mgc "$FILE_STAGE"
-package_archive file "$(host_version file)" "File type identification utility" "$FILE_STAGE"
+package_archive file "$(public_version file)" "File type identification utility" "$FILE_STAGE"
 
 # sudo needs its policy plugin, PAM authentication module, and conservative
 # defaults. The package does not add users to the sudo group automatically.
@@ -139,7 +141,7 @@ root ALL=(ALL:ALL) ALL
 %sudo ALL=(ALL:ALL) ALL
 EOF
 chmod 440 "$SUDO_STAGE/etc/sudoers"
-package_archive sudo "$(host_version sudo)" "Privilege delegation and command execution tool" "$SUDO_STAGE"
+package_archive sudo "$(public_version sudo)" "Privilege delegation and command execution tool" "$SUDO_STAGE"
 
 # Create a deterministic SHA-256 index from all generated archives.
 {

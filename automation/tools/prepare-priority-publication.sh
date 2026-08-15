@@ -20,7 +20,7 @@ fi
 cp "$ROOT/recipes/priority.tsv" "$OUT/automation/recipes/priority.tsv"
 cp "$ROOT/recipes/"*.recipe "$OUT/automation/recipes/"
 cp "$ROOT/recipes/README.md" "$OUT/automation/recipes/"
-cp "$ROOT/tools/build-priority-packages.sh" "$ROOT/tools/build-public-packages.sh" "$ROOT/tools/test-priority-repository.sh" "$ROOT/tools/validate-recipes.sh" "$ROOT/tools/write-package-index.sh" "$ROOT/tools/merge-repository-index.mjs" "$ROOT/tools/prepare-package-updates.mjs" "$ROOT/tools/verify-repository-index.mjs" "$ROOT/tools/prepare-priority-publication.sh" "$ROOT/tools/minipkg" "$OUT/automation/tools/"
+cp "$ROOT/tools/build-priority-packages.sh" "$ROOT/tools/build-public-packages.sh" "$ROOT/tools/test-priority-repository.sh" "$ROOT/tools/validate-recipes.sh" "$ROOT/tools/write-package-index.sh" "$ROOT/tools/merge-repository-index.mjs" "$ROOT/tools/prepare-package-updates.mjs" "$ROOT/tools/prune-unreferenced-archives.mjs" "$ROOT/tools/verify-repository-index.mjs" "$ROOT/tools/prepare-priority-publication.sh" "$ROOT/tools/minipkg" "$OUT/automation/tools/"
 WORKFLOW_ROOT=$ROOT
 [ -f "$WORKFLOW_ROOT/.github/workflows/priority-repository-verify.yml" ] || WORKFLOW_ROOT=$(dirname "$ROOT")
 cp "$WORKFLOW_ROOT/.github/workflows/priority-repository-verify.yml" "$OUT/.github/workflows/"

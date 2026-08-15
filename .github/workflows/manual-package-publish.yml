@@ -72,6 +72,7 @@ jobs:
             x86_64/index.json \
             "$RUNNER_TEMP/minilinux-updates.json" \
             x86_64/index.json
+          node automation/tools/prune-unreferenced-archives.mjs x86_64
           node automation/tools/verify-repository-index.mjs x86_64
 
       - name: Upload tested publication output
