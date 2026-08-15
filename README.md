@@ -19,11 +19,15 @@ printf '#include <iostream>\nint main(){std::cout << "MiniLinux";}\n' > hello.cp
 g++ hello.cpp -o hello && ./hello
 
 minipkg install python3 git
+
+# Optional desktop browser; requires the XFCE desktop stack.
+minipkg install firefox
+firefox
 ```
 
 ## Available packages
 
-The repository currently provides **50 MiniLinux x86_64 packages**. The
+The repository currently provides **58 MiniLinux x86_64 packages**. The
 canonical version, dependency, archive, and checksum records are maintained in
 [`x86_64/index.json`](x86_64/index.json); package names deliberately remain
 independent of the Ubuntu build-host revision.
@@ -40,6 +44,8 @@ independent of the Ubuntu build-host revision.
 | `dnsutils` | DNS lookup and diagnostic utilities. |
 | `fastfetch` | Fast system information tool with MiniLinux logo. |
 | `file` | File type identification utility. |
+| `firefox` | Optional Mozilla Firefox 153.0.3 web browser for XFCE; the archive is about 88 MiB and the installed browser runtime is about 295 MiB. Around 1.5 GiB RAM is recommended. |
+| `fonts-dejavu` | Baseline DejaVu and Liberation desktop fonts. |
 | `gcc` | GNU C compiler with x86_64 runtime support. |
 | `gdb` | GNU debugger for native programs. |
 | `git` | Distributed version-control client. |
@@ -51,9 +57,11 @@ independent of the Ubuntu build-host revision.
 | `jq` | Command-line JSON processor. |
 | `less` | Terminal pager. |
 | `libc-dev` | C library headers and startup objects for native compilation. |
+| `lightdm` | Graphical login manager with GTK greeter. |
 | `lsof` | Open files and sockets inspection utility. |
 | `ltrace` | Library call tracing utility. |
 | `make` | GNU build automation tool. |
+| `mesa` | Mesa DRI, OpenGL, EGL, GBM and DRM desktop runtime. |
 | `meson` | Python-based modern build system. |
 | `nano` | Simple terminal text editor. |
 | `neofetch` | Bash system information tool with MiniLinux logo. |
@@ -70,6 +78,7 @@ independent of the Ubuntu build-host revision.
 | `strace` | System-call and signal tracing utility. |
 | `sudo` | Privilege delegation and command execution tool. |
 | `tar` | GNU tar archive utility. |
+| `thunar` | XFCE file manager. |
 | `tmux` | Terminal multiplexer for persistent sessions. |
 | `traceroute` | Network route tracing utility. |
 | `tree` | Directory hierarchy display utility. |
@@ -78,6 +87,9 @@ independent of the Ubuntu build-host revision.
 | `wget` | Command-line HTTP and HTTPS download client. |
 | `whois` | WHOIS lookup and password hash tools. |
 | `xz` | XZ compression and decompression tools. |
+| `xfce4` | XFCE session, window manager, panel, desktop and settings. |
+| `xfce4-terminal` | XFCE terminal emulator. |
+| `xorg` | X.Org server with modesetting and libinput input path. |
 | `zip` | ZIP archive creator. |
 | `zstd` | Zstandard compression and decompression tools. |
 
